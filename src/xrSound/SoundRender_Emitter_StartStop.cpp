@@ -34,10 +34,19 @@ void CSoundRender_Emitter::start(const ref_sound& _owner, u32 flags, float delay
     }
     bStopping = FALSE;
     bRewind = FALSE;
+
+#ifdef USE_PHONON
+    if (const auto simulator = scene->ipl_simulator())
+        iplSourceAdd(m_ipl_source, simulator);
+#endif
 }
 
 void CSoundRender_Emitter::i_stop()
 {
+#ifdef USE_PHONON
+    if (m_ipl_source)
+        iplSourceRemove(m_ipl_source, scene->ipl_simulator());
+#endif
     bRewind = FALSE;
     if (target)
         SoundRender->i_stop(this);

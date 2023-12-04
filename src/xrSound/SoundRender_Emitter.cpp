@@ -10,7 +10,11 @@ extern float psSoundVEffects;
 
 void CSoundRender_Emitter::set_position(const Fvector& pos)
 {
-    if (source()->channels_num() == 1)
+    if (source()->channels_num() == 1
+#ifdef USE_PHONON
+        || m_ipl_source
+#endif
+        )
         p_source.position = pos;
     else
         p_source.position.set(0, 0, 0);
@@ -41,10 +45,24 @@ CSoundRender_Emitter::CSoundRender_Emitter(CSoundRender_Scene* s)
       fade_volume(1.f),
       m_current_state(stStopped),
       bMoved(true),
-      marker(0xabababab) {}
+      marker(0xabababab)
+{
+#ifdef USE_PHONON
+    if (const auto simulator = scene->ipl_simulator())
+    {
+        IPLSourceSettings sourceSettings{ IPL_SIMULATIONFLAGS_DIRECT };
+        iplSourceCreate(simulator, &sourceSettings, &m_ipl_source);
+    }
+#endif
+}
 
 CSoundRender_Emitter::~CSoundRender_Emitter()
 {
+#ifdef USE_PHONON
+    if (m_ipl_source)
+        iplSourceRelease(&m_ipl_source);
+#endif
+
     // try to release dependencies, events, for example
     Event_ReleaseOwner();
 }

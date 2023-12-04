@@ -25,6 +25,21 @@ protected:
 public:
     void wait_prefill() const;
 
+protected:
+#ifdef USE_PHONON
+    struct
+    {
+        IPLDirectEffect direct{};
+        IPLReflectionEffect reflection{};
+        IPLPathEffect path{};
+    } ipl_effects{};
+    struct
+    {
+        IPLAudioBuffer direct_input{};
+        IPLAudioBuffer direct_output{};
+    } ipl_buffers{};
+#endif
+
 public:
     float priority{};
 

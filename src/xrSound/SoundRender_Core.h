@@ -73,6 +73,12 @@ protected:
     xr_vector<CSoundRender_Target*> s_targets_defer;
     u32 s_targets_pu; // parameters update
 
+#ifdef USE_PHONON
+    IPLContext m_ipl_context{};
+    IPLHRTF m_ipl_hrtf{};
+    IPLAudioSettings m_ipl_settings{};
+#endif
+
 public:
     bool supports_float_pcm{};
 
@@ -117,6 +123,13 @@ public:
     virtual void update_listener(const Fvector& P, const Fvector& D, const Fvector& N, const Fvector& R, float dt);
 
     void refresh_sources() override;
+
+#ifdef USE_PHONON
+    [[nodiscard]]
+    auto ipl_context() const { return m_ipl_context; }
+    const auto& ipl_settings() const { return m_ipl_settings; }
+    auto ipl_hrtf() const { return m_ipl_hrtf; }
+#endif
 
 public:
     bool i_create_source(CSound_source*& result, pcstr name, bool replaceWithNoSound = true);

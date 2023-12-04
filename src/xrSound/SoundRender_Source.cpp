@@ -204,6 +204,10 @@ bool CSoundRender_Source::LoadWave(pcstr pName, bool crashOnError)
     m_info.avgBytesPerSec = m_info.samplesPerSec * m_info.blockAlign;
     m_info.bytesPerBuffer = sdef_target_block * m_info.avgBytesPerSec / 1000;
 
+#ifdef USE_PHONON
+    ipl_audio_settings = { ovi->rate, IPLint32(m_info.bytesPerBuffer / m_info.blockAlign) };
+#endif
+
     const s64 pcm_total = ov_pcm_total(&ovf, -1);
     dwBytesTotal = u32(pcm_total * m_info.blockAlign);
     fTimeTotal = dwBytesTotal / float(m_info.avgBytesPerSec);

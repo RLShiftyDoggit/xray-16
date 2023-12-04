@@ -35,6 +35,14 @@ public:
     [[nodiscard]]
     CSoundRender_Source* source() const { return (CSoundRender_Source*)owner_data->handle; }
 
+#ifdef USE_PHONON
+private:
+    IPLSource m_ipl_source{};
+
+public:
+    auto ipl_source() const { return m_ipl_source; }
+#endif
+
     [[nodiscard]]
     u32 get_bytes_total() const;
     [[nodiscard]]

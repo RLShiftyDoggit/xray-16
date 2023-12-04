@@ -37,6 +37,9 @@ public:
     u32 dwBytesTotal;
 
     SoundSourceInfo m_info{};
+#ifdef USE_PHONON
+    IPLAudioSettings ipl_audio_settings{};
+#endif
 
     float m_fBaseVolume;
     float m_fMinDist;

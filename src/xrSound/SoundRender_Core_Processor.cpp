@@ -106,16 +106,16 @@ void CSoundRender_Core::update(const Fvector& P, const Fvector& D, const Fvector
     // update listener
     update_listener(P, D, N, R, fTimer_Delta);
 
+    // Events
+    for (CSoundRender_Scene* scene : m_scenes)
+        scene->update();
+
     // Start rendering of pending targets
     if (!s_targets_defer.empty())
     {
         for (CSoundRender_Target* target : s_targets_defer)
             target->render();
     }
-
-    // Events
-    for (CSoundRender_Scene* scene : m_scenes)
-        scene->update();
 
     isLocked = false;
     Stats.Update.End();
