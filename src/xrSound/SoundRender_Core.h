@@ -3,7 +3,6 @@
 #include "xrCommon/xr_unordered_map.h"
 
 #include "SoundRender.h"
-#include "SoundRender_Environment.h"
 #include "SoundRender_Scene.h"
 
 class CSoundRender_Core : public ISoundManager
@@ -47,8 +46,6 @@ protected:
 
     bool bListenerMoved{};
 
-    CSoundRender_Environment e_current;
-    CSoundRender_Environment e_target;
     SoundStatistics Stats;
 
 public:
